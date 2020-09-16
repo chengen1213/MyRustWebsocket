@@ -1,0 +1,12 @@
+C:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\debug\deps\cc-6e4d030b4b2f473d.rmeta: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\registry.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\winapi.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\com.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\setup_config.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\windows_registry.rs
+
+C:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\debug\deps\libcc-6e4d030b4b2f473d.rlib: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\registry.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\winapi.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\com.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\setup_config.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\windows_registry.rs
+
+C:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\debug\deps\cc-6e4d030b4b2f473d.d: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\registry.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\winapi.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\com.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\setup_config.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\windows_registry.rs
+
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\lib.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\registry.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\winapi.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\com.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\setup_config.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\cc-1.0.59\src\windows_registry.rs:

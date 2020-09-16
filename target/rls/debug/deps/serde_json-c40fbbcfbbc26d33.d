@@ -1,0 +1,13 @@
+c:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\rls\debug\deps\serde_json-c40fbbcfbbc26d33.rmeta: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\macros.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\de.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\error.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\map.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\ser.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\value.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\number.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\read.rs
+
+c:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\rls\debug\deps\serde_json-c40fbbcfbbc26d33.d: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\macros.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\de.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\error.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\map.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\ser.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\value.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\number.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\read.rs
+
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\lib.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\macros.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\de.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\error.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\map.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\ser.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\value.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\number.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\serde_json-0.9.10\src\read.rs:

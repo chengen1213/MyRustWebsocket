@@ -1,0 +1,12 @@
+C:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\debug\deps\httparse-54ac1a4b8d4c5481.rmeta: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\iter.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\macros.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\mod.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\sse42.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\avx2.rs
+
+C:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\debug\deps\libhttparse-54ac1a4b8d4c5481.rlib: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\iter.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\macros.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\mod.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\sse42.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\avx2.rs
+
+C:\Users\Anubi\Udemy\Rust\MyRustWebsocket\target\debug\deps\httparse-54ac1a4b8d4c5481.d: C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\lib.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\iter.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\macros.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\mod.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\sse42.rs C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\avx2.rs
+
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\lib.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\iter.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\macros.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\mod.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\sse42.rs:
+C:\Users\Anubi\.cargo\registry\src\github.com-1ecc6299db9ec823\httparse-1.3.4\src\simd\avx2.rs:
