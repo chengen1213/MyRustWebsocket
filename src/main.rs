@@ -22,7 +22,7 @@ use actix_web_actors::ws;
 
 use futures::executor;
 use uuid::Uuid;
-use openssl::ssl::{SslConnector, SslMethod};
+// use openssl::ssl::{SslConnector, SslMethod};
 
 #[macro_use]
 extern crate serde_derive;
@@ -212,25 +212,25 @@ impl MyWebSocket {
     async fn save_img(&self, name: &String, _msg: &String) -> (String, String) {
         let (uuid, path) = create_file(name);
 
-        let builder = SslConnector::builder(SslMethod::tls()).unwrap();
+        // let builder = SslConnector::builder(SslMethod::tls()).unwrap();
 
-        let client = Client::build()
-            .connector(Connector::new().ssl(builder.build()).finish())
-            .finish();
+        // let client = Client::build()
+        //     .connector(Connector::new().ssl(builder.build()).finish())
+        //     .finish();
 
-        println!("send get!");
-        let payload = client
-            .get(_msg)
-            .send()
-            .await
-            .unwrap()
-            .body()
-            .limit(20_000_000) // sets max allowable payload size
-            .await
-            .unwrap();
+        // println!("send get!");
+        // let payload = client
+        //     .get(_msg)
+        //     .send()
+        //     .await
+        //     .unwrap()
+        //     .body()
+        //     .limit(20_000_000) // sets max allowable payload size
+        //     .await
+        //     .unwrap();
 
         println!("payload---------recieved");
-        std::fs::write(&path, payload).expect("Unable to write file");
+        std::fs::write(&path, _msg).expect("Unable to write file");
         return (uuid, path);
     }
 }

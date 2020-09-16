@@ -27,5 +27,3 @@ serde = "0.9"
 serde_json = "0.9"
 serde_derive = "0.9"
 uuid = { version = "0.8", features = ["serde", "v4"] }
-openssl = "0.10.28"
-
