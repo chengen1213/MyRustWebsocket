@@ -239,9 +239,9 @@ async fn main() -> std::io::Result<()> {
 
     let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
     builder
-        .set_private_key_file("key.pem", SslFiletype::PEM)
+        .set_private_key_file("/etc/letsencrypt/live/remakeaon.com/privkey.pem", SslFiletype::PEM)
         .unwrap();
-    builder.set_certificate_chain_file("cert.pem").unwrap();
+    builder.set_certificate_chain_file("/etc/letsencrypt/live/remakeaon.com/fullchain.pem").unwrap();
 
     let map: HashMap<String, String> = HashMap::new();
     let files = web::Data::new(Mutex::new(map));
