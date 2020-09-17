@@ -74,6 +74,8 @@ fn save_txt(name: &String, _msg: &String) -> (String, String) {
 async fn save_img(path: String, _msg: String) {
     // let (uuid, path) = create_file(name);
 
+    println!("make a request to {}", _msg);
+
     let builder = SslConnector::builder(SslMethod::tls()).unwrap();
 
     let client = Client::build()
@@ -89,6 +91,8 @@ async fn save_img(path: String, _msg: String) {
         .limit(20_000_000) // sets max allowable payload size
         .await
         .unwrap();
+
+    println!("recieve {}", _payload.len());
 
     println!("write to {}", path);
     std::fs::write(&path, _payload).expect("Unable to write file");
