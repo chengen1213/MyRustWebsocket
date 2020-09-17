@@ -20,7 +20,7 @@ use actix_web::{
 };
 use actix_web_actors::ws;
 
-use openssl::ssl::{SslConnector, SslMethod};
+use openssl::ssl::{SslAcceptor, SslConnector, SslFiletype, SslMethod};
 use uuid::Uuid;
 
 #[macro_use]
@@ -31,7 +31,7 @@ const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 /// How long before lack of client response causes a timeout
 const CLIENT_TIMEOUT: Duration = Duration::from_secs(10);
 
-const HOSTNAME: &str = "http://remakeaon.com/";
+const HOSTNAME: &str = "https://remakeaon.com/";
 
 #[derive(Deserialize)]
 struct Action {
@@ -236,6 +236,13 @@ impl MyWebSocket {
 async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "actix_server=info,actix_web=info");
     env_logger::init();
+
+    let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
+    builder
+        .set_private_key_file("key.pem", SslFiletype::PEM)
+        .unwrap();
+    builder.set_certificate_chain_file("cert.pem").unwrap();
+
     let map: HashMap<String, String> = HashMap::new();
     let files = web::Data::new(Mutex::new(map));
 
