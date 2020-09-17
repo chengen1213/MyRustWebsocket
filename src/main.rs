@@ -91,6 +91,7 @@ async fn save_img(path: String, _msg: String) {
         .await
         .unwrap();
 
+    println!("write to {}", path);
     std::fs::write(&path, _payload).expect("Unable to write file");
     // return (uuid, path);
 }
