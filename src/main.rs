@@ -21,8 +21,8 @@ use actix_web::{
 use actix_web_actors::ws;
 
 use futures::executor;
+use openssl::ssl::{SslConnector, SslMethod};
 use uuid::Uuid;
-// use openssl::ssl::{SslConnector, SslMethod};
 
 #[macro_use]
 extern crate serde_derive;
@@ -62,6 +62,37 @@ fn create_file(name: &String) -> (String, String) {
         Ok(file) => file,
     };
     return (uuid.to_string(), url);
+}
+
+fn save_txt(name: &String, _msg: &String) -> (String, String) {
+    let (uuid, path) = create_file(name);
+
+    std::fs::write(&path, _msg).expect("Unable to write file");
+
+    return (uuid, path);
+}
+
+async fn save_img(path: String, _msg: String) {
+    // let (uuid, path) = create_file(name);
+
+    let builder = SslConnector::builder(SslMethod::tls()).unwrap();
+
+    let client = Client::build()
+        .connector(Connector::new().ssl(builder.build()).finish())
+        .finish();
+
+    let _payload = client
+        .get(_msg)
+        .send()
+        .await
+        .unwrap()
+        .body()
+        .limit(20_000_000) // sets max allowable payload size
+        .await
+        .unwrap();
+
+    std::fs::write(&path, _payload).expect("Unable to write file");
+    // return (uuid, path);
 }
 
 /// do websocket handshake and start `MyWebSocket` actor
@@ -135,9 +166,15 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 // println!("{:?},{:?}", parsed, parsed["type"]);
                 let result;
                 if &action.file_type == "text" {
-                    result = self.save_txt(&action.name, &action.msg);
+                    result = save_txt(&action.name, &action.msg);
                 } else if &action.file_type == "pic" {
-                    result = executor::block_on(self.save_img(&action.name, &action.msg));
+                    result = create_file(&action.name);
+
+                    ctx.spawn(Box::new(crate::fut::wrap_future(save_img(
+                        result.1.clone(),
+                        String::from(&action.msg),
+                    ))));
+                // result = executor::block_on(self.save_img(&action.name, &action.msg));
                 } else {
                     ctx.text("Invalid type!");
                     return;
@@ -188,50 +225,6 @@ impl MyWebSocket {
 
             ctx.ping(b"");
         });
-    }
-
-    fn save_txt(&self, name: &String, _msg: &String) -> (String, String) {
-        let (uuid, path) = create_file(name);
-        // let uuid: Uuid = Uuid::new_v4();
-        // let mut url = "files/".to_owned();
-        // url.push_str(&uuid.to_string());
-        // url.push_str("/");
-        // url.push_str(&name);
-        // let path = std::path::Path::new(&url);
-        // let prefix = path.parent().unwrap();
-        // let display = path.display();
-        // std::fs::create_dir_all(prefix).unwrap();
-        // match std::fs::File::create(&path) {
-        //     Err(why) => panic!("couldn't create {}: {}", display, why),
-        //     Ok(file) => file,
-        // };
-        std::fs::write(&path, _msg).expect("Unable to write file");
-        return (uuid, path);
-    }
-
-    async fn save_img(&self, name: &String, _msg: &String) -> (String, String) {
-        let (uuid, path) = create_file(name);
-
-        // let builder = SslConnector::builder(SslMethod::tls()).unwrap();
-
-        // let client = Client::build()
-        //     .connector(Connector::new().ssl(builder.build()).finish())
-        //     .finish();
-
-        // println!("send get!");
-        // let payload = client
-        //     .get(_msg)
-        //     .send()
-        //     .await
-        //     .unwrap()
-        //     .body()
-        //     .limit(20_000_000) // sets max allowable payload size
-        //     .await
-        //     .unwrap();
-
-        println!("payload---------recieved");
-        std::fs::write(&path, _msg).expect("Unable to write file");
-        return (uuid, path);
     }
 }
 
