@@ -20,7 +20,6 @@ use actix_web::{
 };
 use actix_web_actors::ws;
 
-use futures::executor;
 use openssl::ssl::{SslConnector, SslMethod};
 use uuid::Uuid;
 
@@ -32,7 +31,7 @@ const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 /// How long before lack of client response causes a timeout
 const CLIENT_TIMEOUT: Duration = Duration::from_secs(10);
 
-const HOSTNAME: &str = "http://localhost:8080/";
+const HOSTNAME: &str = "http://remakeaon.com/";
 
 #[derive(Deserialize)]
 struct Action {
