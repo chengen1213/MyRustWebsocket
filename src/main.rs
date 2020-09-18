@@ -8,7 +8,6 @@ extern crate serde_json;
 extern crate uuid;
 
 use std::collections::HashMap;
-use std::convert::TryFrom;
 use std::path::Path;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -177,6 +176,18 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 self.hb = Instant::now();
             }
             Ok(ws::Message::Text(text)) => {
+
+                if text == String::from("statistics") {
+                    let duration = Instant::now().duration_since(self.init);
+                    let statistic = Statistics {
+                        count: self.count,
+                        size: self.size,
+                        duration,
+                    };
+                    // println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
+                    ctx.text(serde_json::to_string(&statistic).unwrap());
+                }
+                
                 let action: Action = serde_json::from_str(&text[..]).unwrap();
                 // println!("{:?},{:?}", parsed, parsed["type"]);
                 let result;
@@ -203,14 +214,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     self.size += file_size;
                 // result = executor::block_on(self.save_img(&action.name, &action.msg));
                 } else {
-                    let duration = Instant::now().duration_since(self.init);
-                    let statistic = Statistics {
-                        count: self.count,
-                        size: self.size,
-                        duration,
-                    };
-                    println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
-                    ctx.text(serde_json::to_string(&statistic).unwrap());
+                    ctx.text("Invalid type!!");
                     return;
                 }
                 let mut url = HOSTNAME.to_owned();
