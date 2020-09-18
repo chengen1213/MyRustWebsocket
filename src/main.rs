@@ -210,10 +210,11 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         result.1.clone(),
                         String::from(&action.msg),
                     ))));
-                    let path = std::path::Path::new(&result.1);
-                    let file_size = path.metadata().unwrap().len();
+                    // let path = std::path::Path::new(&result.1);
+                    let file = std::fs::File::open(&result.1).unwrap();
+                    let file_size = file.metadata().unwrap().len();
                     self.size += file_size;
-                    println!("-------------------{} {} {}", path.to_str().unwrap(), file_size, self.size);
+                    println!("------------------- {} {}", file_size, self.size);
                 // result = executor::block_on(self.save_img(&action.name, &action.msg));
                 } else {
                     ctx.text("Invalid type!!");
