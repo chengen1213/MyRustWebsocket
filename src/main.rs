@@ -10,8 +10,8 @@ extern crate uuid;
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::Mutex;
+use std::{thread, time};
 use std::time::{Duration, Instant};
-use futures::executor;
 
 use actix::prelude::*;
 use actix_files as fs;
@@ -51,15 +51,7 @@ struct Download {
 struct Statistics {
     count: u32,
     size: u64,
-    duration: Duration,
-}
-
-fn convert(x: usize) -> Result<u64, &'static str> {
-    let result = x as u64;
-    if result as usize != x {
-        return Err("cannot convert")
-    }
-    Ok(result)
+    duration: f32,
 }
 
 fn create_file(name: &String) -> (String, String) {
@@ -87,7 +79,7 @@ fn save_txt(name: &String, _msg: &String) -> (String, String) {
     return (uuid, path);
 }
 
-async fn save_img(path: String, _msg: String) -> usize {
+async fn save_img(path: String, _msg: String) {
     // let (uuid, path) = create_file(name);
 
     println!("make a request to {}", _msg);
@@ -108,12 +100,10 @@ async fn save_img(path: String, _msg: String) -> usize {
         .await
         .unwrap();
 
-    let payload_size = _payload.len();
     println!("recieve {}", _payload.len());
 
     println!("write to {}", path);
     std::fs::write(&path, _payload).expect("Unable to write file");
-    return payload_size;
     // return (uuid, path);
 }
 
@@ -193,9 +183,9 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     let statistic = Statistics {
                         count: self.count,
                         size: self.size,
-                        duration,
+                        duration: duration.as_secs_f32(),
                     };
-                    println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
+                    // println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
                     ctx.text(serde_json::to_string(&statistic).unwrap());
                     return;
                 }
@@ -217,20 +207,17 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     //     result.1.clone(),
                     //     String::from(&action.msg),
                     // ))));
-                    // ctx.wait(Box::new(crate::fut::wrap_future(save_img(
-                    //     result.1.clone(),
-                    //     String::from(&action.msg),
-                    // ))));
-                    let size = executor::block_on(save_img(
+                    ctx.wait(Box::new(crate::fut::wrap_future(save_img(
                         result.1.clone(),
                         String::from(&action.msg),
-                    ));
-                    // let path = std::path::Path::new(&result.1);
-                    // println!("+++++++++++++++++++ {}", Path::new(&result.1).exists());
-                    // let file = std::fs::File::open(&result.1).unwrap();
-                    // let file_size = file.metadata().unwrap().len();
-                    self.size += convert(size).unwrap();
-                    println!("------------------- {} {}", size, self.size);
+                    ))));
+                    while ctx.waiting() {
+                        thread::sleep(time::Duration::from_millis(100));
+                    }
+                    let path = std::path::Path::new(&result.1);
+                    let file_size = path.metadata().unwrap().len();
+                    self.size += file_size;
+                // result = executor::block_on(self.save_img(&action.name, &action.msg));
                 } else {
                     ctx.text("Invalid type!!");
                     return;
