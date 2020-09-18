@@ -10,8 +10,8 @@ extern crate uuid;
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::Mutex;
-use std::{thread, time};
 use std::time::{Duration, Instant};
+use std::{thread, time};
 
 use actix::prelude::*;
 use actix_files as fs;
@@ -177,7 +177,6 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 self.hb = Instant::now();
             }
             Ok(ws::Message::Text(text)) => {
-
                 if text == String::from("statistics") {
                     let duration = Instant::now().duration_since(self.init);
                     let statistic = Statistics {
@@ -185,7 +184,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         size: self.size,
                         duration: duration.as_secs_f32(),
                     };
-                    // println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
+                    println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
                     ctx.text(serde_json::to_string(&statistic).unwrap());
                     return;
                 }
@@ -212,8 +211,10 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         String::from(&action.msg),
                     ))));
                     // while ctx.waiting() {
-                        // thread::sleep(time::Duration::from_millis(100));
+                    // thread::sleep(time::Duration::from_millis(100));
                     // }
+                    // let aa = web::block(save_img(result.1.clone(), String::from(&action.msg)));
+
                     thread::sleep(time::Duration::from_millis(1000));
 
                     let path = std::path::Path::new(&result.1);
