@@ -174,10 +174,15 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 } else if &action.file_type == "pic" {
                     result = create_file(&action.name);
 
-                    ctx.spawn(Box::new(crate::fut::wrap_future(save_img(
+                    // ctx.spawn(Box::new(crate::fut::wrap_future(save_img(
+                    //     result.1.clone(),
+                    //     String::from(&action.msg),
+                    // ))));
+                    ctx.wait(Box::new(crate::fut::wrap_future(save_img(
                         result.1.clone(),
                         String::from(&action.msg),
-                    ))));
+                    ))))
+                    
                 // result = executor::block_on(self.save_img(&action.name, &action.msg));
                 } else {
                     ctx.text("Invalid type!");
