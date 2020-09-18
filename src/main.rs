@@ -184,10 +184,11 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         size: self.size,
                         duration,
                     };
-                    // println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
+                    println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
                     ctx.text(serde_json::to_string(&statistic).unwrap());
+                    return;
                 }
-                
+
                 let action: Action = serde_json::from_str(&text[..]).unwrap();
                 // println!("{:?},{:?}", parsed, parsed["type"]);
                 let result;
