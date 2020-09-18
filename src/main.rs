@@ -184,7 +184,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         size: self.size,
                         duration: duration.as_secs_f32(),
                     };
-                    println!("{} {} {}", statistic.count, statistic.size, statistic.duration.as_secs());
+                    println!("{} {} {}", statistic.count, statistic.size, statistic.duration);
                     ctx.text(serde_json::to_string(&statistic).unwrap());
                     return;
                 }
