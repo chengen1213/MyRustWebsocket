@@ -8,6 +8,7 @@ extern crate serde_json;
 extern crate uuid;
 
 use std::collections::HashMap;
+use std::convert::TryFrom;
 use std::path::Path;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -44,6 +45,13 @@ struct Action {
 #[derive(Serialize)]
 struct Download {
     download: String,
+}
+
+#[derive(Serialize)]
+struct Statistics {
+    count: u32,
+    size: u64,
+    duration: Duration,
 }
 
 fn create_file(name: &String) -> (String, String) {
@@ -140,7 +148,10 @@ struct MyWebSocket {
     /// Client must send ping at least once per 10 seconds (CLIENT_TIMEOUT),
     /// otherwise we drop connection.
     hb: Instant,
+    init: Instant,
     state: web::Data<Mutex<HashMap<String, String>>>,
+    count: u32,
+    size: u64,
 }
 
 impl Actor for MyWebSocket {
@@ -170,8 +181,13 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 // println!("{:?},{:?}", parsed, parsed["type"]);
                 let result;
                 if &action.file_type == "text" {
+                    self.count += 1;
                     result = save_txt(&action.name, &action.msg);
+                    let path = std::path::Path::new(&result.1);
+                    let file_size = path.metadata().unwrap().len();
+                    self.size += file_size;
                 } else if &action.file_type == "pic" {
+                    self.count += 1;
                     result = create_file(&action.name);
 
                     // ctx.spawn(Box::new(crate::fut::wrap_future(save_img(
@@ -181,8 +197,10 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     ctx.wait(Box::new(crate::fut::wrap_future(save_img(
                         result.1.clone(),
                         String::from(&action.msg),
-                    ))))
-                    
+                    ))));
+                    let path = std::path::Path::new(&result.1);
+                    let file_size = path.metadata().unwrap().len();
+                    self.size += file_size;
                 // result = executor::block_on(self.save_img(&action.name, &action.msg));
                 } else {
                     ctx.text("Invalid type!");
@@ -199,6 +217,13 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
             }
             // Ok(ws::Message::Binary(bin)) => ctx.binary(bin),
             Ok(ws::Message::Close(reason)) => {
+                let duration = Instant::now().duration_since(self.init);
+                let statistic = Statistics {
+                    count: self.count,
+                    size: self.size,
+                    duration,
+                };
+                ctx.text(serde_json::to_string(&statistic).unwrap());
                 ctx.close(reason);
                 ctx.stop();
             }
@@ -211,7 +236,10 @@ impl MyWebSocket {
     fn new(state: web::Data<Mutex<HashMap<String, String>>>) -> Self {
         Self {
             hb: Instant::now(),
+            init: Instant::now(),
             state,
+            count: 0,
+            size: 0,
         }
     }
 
@@ -244,9 +272,14 @@ async fn main() -> std::io::Result<()> {
 
     let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
     builder
-        .set_private_key_file("/etc/letsencrypt/live/remakeaon.com/privkey.pem", SslFiletype::PEM)
+        .set_private_key_file(
+            "/etc/letsencrypt/live/remakeaon.com/privkey.pem",
+            SslFiletype::PEM,
+        )
         .unwrap();
-    builder.set_certificate_chain_file("/etc/letsencrypt/live/remakeaon.com/fullchain.pem").unwrap();
+    builder
+        .set_certificate_chain_file("/etc/letsencrypt/live/remakeaon.com/fullchain.pem")
+        .unwrap();
 
     let map: HashMap<String, String> = HashMap::new();
     let files = web::Data::new(Mutex::new(map));
