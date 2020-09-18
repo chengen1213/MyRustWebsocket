@@ -11,6 +11,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
+use futures::executor;
 
 use actix::prelude::*;
 use actix_files as fs;
@@ -53,6 +54,14 @@ struct Statistics {
     duration: Duration,
 }
 
+fn convert(x: usize) -> Result<u64, &'static str> {
+    let result = x as u64;
+    if result as usize != x {
+        return Err("cannot convert")
+    }
+    Ok(result)
+}
+
 fn create_file(name: &String) -> (String, String) {
     let uuid: Uuid = Uuid::new_v4();
     let mut url = "files/".to_owned();
@@ -78,7 +87,7 @@ fn save_txt(name: &String, _msg: &String) -> (String, String) {
     return (uuid, path);
 }
 
-async fn save_img(path: String, _msg: String) {
+async fn save_img(path: String, _msg: String) -> usize {
     // let (uuid, path) = create_file(name);
 
     println!("make a request to {}", _msg);
@@ -99,10 +108,12 @@ async fn save_img(path: String, _msg: String) {
         .await
         .unwrap();
 
+    let payload_size = _payload.len();
     println!("recieve {}", _payload.len());
 
     println!("write to {}", path);
     std::fs::write(&path, _payload).expect("Unable to write file");
+    return payload_size;
     // return (uuid, path);
 }
 
@@ -206,17 +217,20 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     //     result.1.clone(),
                     //     String::from(&action.msg),
                     // ))));
-                    ctx.wait(Box::new(crate::fut::wrap_future(save_img(
+                    // ctx.wait(Box::new(crate::fut::wrap_future(save_img(
+                    //     result.1.clone(),
+                    //     String::from(&action.msg),
+                    // ))));
+                    let size = executor::block_on(save_img(
                         result.1.clone(),
                         String::from(&action.msg),
-                    ))));
+                    ));
                     // let path = std::path::Path::new(&result.1);
-                    println!("+++++++++++++++++++ {}", Path::new(&result.1).exists());
-                    let file = std::fs::File::open(&result.1).unwrap();
-                    let file_size = file.metadata().unwrap().len();
-                    self.size += file_size;
-                    println!("------------------- {} {}", file_size, self.size);
-                // result = executor::block_on(self.save_img(&action.name, &action.msg));
+                    // println!("+++++++++++++++++++ {}", Path::new(&result.1).exists());
+                    // let file = std::fs::File::open(&result.1).unwrap();
+                    // let file_size = file.metadata().unwrap().len();
+                    self.size += convert(size).unwrap();
+                    println!("------------------- {} {}", size, self.size);
                 } else {
                     ctx.text("Invalid type!!");
                     return;
