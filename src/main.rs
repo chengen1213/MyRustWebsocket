@@ -211,9 +211,11 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         result.1.clone(),
                         String::from(&action.msg),
                     ))));
-                    while ctx.waiting() {
-                        thread::sleep(time::Duration::from_millis(100));
-                    }
+                    // while ctx.waiting() {
+                        // thread::sleep(time::Duration::from_millis(100));
+                    // }
+                    thread::sleep(time::Duration::from_millis(1000));
+
                     let path = std::path::Path::new(&result.1);
                     let file_size = path.metadata().unwrap().len();
                     self.size += file_size;
