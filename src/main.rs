@@ -211,6 +211,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         String::from(&action.msg),
                     ))));
                     // let path = std::path::Path::new(&result.1);
+                    println!("+++++++++++++++++++ {}", Path::new(&result.1).exists());
                     let file = std::fs::File::open(&result.1).unwrap();
                     let file_size = file.metadata().unwrap().len();
                     self.size += file_size;
