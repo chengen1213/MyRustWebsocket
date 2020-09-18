@@ -203,7 +203,13 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     self.size += file_size;
                 // result = executor::block_on(self.save_img(&action.name, &action.msg));
                 } else {
-                    ctx.text("Invalid type!");
+                    let duration = Instant::now().duration_since(self.init);
+                    let statistic = Statistics {
+                        count: self.count,
+                        size: self.size,
+                        duration,
+                    };
+                    ctx.text(serde_json::to_string(&statistic).unwrap());
                     return;
                 }
                 let mut url = HOSTNAME.to_owned();
@@ -217,13 +223,6 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
             }
             // Ok(ws::Message::Binary(bin)) => ctx.binary(bin),
             Ok(ws::Message::Close(reason)) => {
-                let duration = Instant::now().duration_since(self.init);
-                let statistic = Statistics {
-                    count: self.count,
-                    size: self.size,
-                    duration,
-                };
-                ctx.text(serde_json::to_string(&statistic).unwrap());
                 ctx.close(reason);
                 ctx.stop();
             }
