@@ -11,7 +11,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
-use std::{thread, time};
+// use std::{thread, time};
 
 use actix::prelude::*;
 use actix_files as fs;
@@ -50,8 +50,8 @@ struct Download {
 #[derive(Serialize)]
 struct Statistics {
     count: u32,
-    size: u64,
     duration: f32,
+    // size: u64,
 }
 
 fn create_file(name: &String) -> (String, String) {
@@ -151,7 +151,7 @@ struct MyWebSocket {
     init: Instant,
     state: web::Data<Mutex<HashMap<String, String>>>,
     count: u32,
-    size: u64,
+    // size: u64,
 }
 
 impl Actor for MyWebSocket {
@@ -181,10 +181,10 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     let duration = Instant::now().duration_since(self.init);
                     let statistic = Statistics {
                         count: self.count,
-                        size: self.size,
+                        // size: self.size,
                         duration: duration.as_secs_f32(),
                     };
-                    println!("{} {} {}", statistic.count, statistic.size, statistic.duration);
+
                     ctx.text(serde_json::to_string(&statistic).unwrap());
                     return;
                 }
@@ -195,9 +195,9 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 if &action.file_type == "text" {
                     self.count += 1;
                     result = save_txt(&action.name, &action.msg);
-                    let path = std::path::Path::new(&result.1);
-                    let file_size = path.metadata().unwrap().len();
-                    self.size += file_size;
+                // let path = std::path::Path::new(&result.1);
+                // let file_size = path.metadata().unwrap().len();
+                // self.size += file_size;
                 } else if &action.file_type == "pic" {
                     self.count += 1;
                     result = create_file(&action.name);
@@ -210,17 +210,18 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         result.1.clone(),
                         String::from(&action.msg),
                     ))));
-                    // while ctx.waiting() {
-                    // thread::sleep(time::Duration::from_millis(100));
-                    // }
-                    // let aa = web::block(save_img(result.1.clone(), String::from(&action.msg)));
+                // while ctx.waiting() {
+                // thread::sleep(time::Duration::from_millis(100));
+                // }
+                // let aa = web::block(save_img(result.1.clone(), String::from(&action.msg)));
 
-                    thread::sleep(time::Duration::from_millis(1000));
+                // thread::sleep(time::Duration::from_millis(1000));
 
-                    let path = std::path::Path::new(&result.1);
-                    let file_size = path.metadata().unwrap().len();
-                    self.size += file_size;
-                // result = executor::block_on(self.save_img(&action.name, &action.msg));
+                // result = executor::block_on(save_img(&action.name, &action.msg));
+
+                // let path = std::path::Path::new(&result.1);
+                // let file_size = path.metadata().unwrap().len();
+                // self.size += file_size;
                 } else {
                     ctx.text("Invalid type!!");
                     return;
@@ -251,7 +252,7 @@ impl MyWebSocket {
             init: Instant::now(),
             state,
             count: 0,
-            size: 0,
+            // size: 0,
         }
     }
 
