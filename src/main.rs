@@ -185,6 +185,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         duration: duration.as_secs_f32(),
                     };
 
+                    println!("{}",serde_json::to_string(&statistic).unwrap());
                     ctx.text(serde_json::to_string(&statistic).unwrap());
                     return;
                 }
@@ -206,6 +207,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                     //     result.1.clone(),
                     //     String::from(&action.msg),
                     // ))));
+
                     ctx.wait(Box::new(crate::fut::wrap_future(save_img(
                         result.1.clone(),
                         String::from(&action.msg),
