@@ -185,57 +185,57 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                         duration: duration.as_secs_f32(),
                     };
 
-                    println!("{}",serde_json::to_string(&statistic).unwrap());
+                    println!("{}", serde_json::to_string(&statistic).unwrap());
                     ctx.text(serde_json::to_string(&statistic).unwrap());
-                    return;
-                }
-
-                let action: Action = serde_json::from_str(&text[..]).unwrap();
-                // println!("{:?},{:?}", parsed, parsed["type"]);
-                let result;
-                if &action.file_type == "text" {
-                    self.count += 1;
-                    result = save_txt(&action.name, &action.msg);
-                // let path = std::path::Path::new(&result.1);
-                // let file_size = path.metadata().unwrap().len();
-                // self.size += file_size;
-                } else if &action.file_type == "pic" {
-                    self.count += 1;
-                    result = create_file(&action.name);
-
-                    // ctx.spawn(Box::new(crate::fut::wrap_future(save_img(
-                    //     result.1.clone(),
-                    //     String::from(&action.msg),
-                    // ))));
-
-                    ctx.wait(Box::new(crate::fut::wrap_future(save_img(
-                        result.1.clone(),
-                        String::from(&action.msg),
-                    ))));
-                // while ctx.waiting() {
-                // thread::sleep(time::Duration::from_millis(100));
-                // }
-                // let aa = web::block(save_img(result.1.clone(), String::from(&action.msg)));
-
-                // thread::sleep(time::Duration::from_millis(1000));
-
-                // result = executor::block_on(save_img(&action.name, &action.msg));
-
-                // let path = std::path::Path::new(&result.1);
-                // let file_size = path.metadata().unwrap().len();
-                // self.size += file_size;
+                    
                 } else {
-                    ctx.text("Invalid type!!");
-                    return;
+                    let action: Action = serde_json::from_str(&text[..]).unwrap();
+                    // println!("{:?},{:?}", parsed, parsed["type"]);
+                    let result;
+                    if &action.file_type == "text" {
+                        self.count += 1;
+                        result = save_txt(&action.name, &action.msg);
+                    // let path = std::path::Path::new(&result.1);
+                    // let file_size = path.metadata().unwrap().len();
+                    // self.size += file_size;
+                    } else if &action.file_type == "pic" {
+                        self.count += 1;
+                        result = create_file(&action.name);
+
+                        // ctx.spawn(Box::new(crate::fut::wrap_future(save_img(
+                        //     result.1.clone(),
+                        //     String::from(&action.msg),
+                        // ))));
+
+                        ctx.wait(Box::new(crate::fut::wrap_future(save_img(
+                            result.1.clone(),
+                            String::from(&action.msg),
+                        ))));
+                    // while ctx.waiting() {
+                    // thread::sleep(time::Duration::from_millis(100));
+                    // }
+                    // let aa = web::block(save_img(result.1.clone(), String::from(&action.msg)));
+
+                    // thread::sleep(time::Duration::from_millis(1000));
+
+                    // result = executor::block_on(save_img(&action.name, &action.msg));
+
+                    // let path = std::path::Path::new(&result.1);
+                    // let file_size = path.metadata().unwrap().len();
+                    // self.size += file_size;
+                    } else {
+                        ctx.text("Invalid type!!");
+                        return;
+                    }
+                    let mut url = HOSTNAME.to_owned();
+                    url.push_str(&result.0);
+                    url.push_str("/");
+                    let download = Download { download: url };
+                    let mut map = self.state.lock().unwrap();
+                    map.insert(result.0, result.1);
+                    println!("{:?}", map);
+                    ctx.text(serde_json::to_string(&download).unwrap());
                 }
-                let mut url = HOSTNAME.to_owned();
-                url.push_str(&result.0);
-                url.push_str("/");
-                let download = Download { download: url };
-                let mut map = self.state.lock().unwrap();
-                map.insert(result.0, result.1);
-                println!("{:?}", map);
-                ctx.text(serde_json::to_string(&download).unwrap());
             }
             // Ok(ws::Message::Binary(bin)) => ctx.binary(bin),
             Ok(ws::Message::Close(reason)) => {
